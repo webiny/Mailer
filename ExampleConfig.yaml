@@ -33,6 +33,6 @@ Mailer:
     # just ommit this definition in your config file.
     Bridge: \Webiny\Component\Mailer\Bridge\SwiftMailer\SwiftMailer
     # Entries under ClassLoader are automatically registered
-    # with ClassLoader.
+    # with ClassLoader. You don't need this part if you are using Composer autoload.
     ClassLoader:
         Swift_: /var/Vendors/SwiftMailer/lib/classes
