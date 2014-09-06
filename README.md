@@ -218,8 +218,6 @@ class MyClass
 ## Bridge
 
 The default bridge library is `SwiftMailer` (http://swiftmailer.org/).
-**NOTE:** SwiftMailer doesn't have a proper dependency injection, at least not by any standard, therefore you need to
-include this file `SwiftMailer/lib/swift_init.php` somewhere inside your code, before you use the Mailer component.
 
 If you wish to create your own driver ,you need to create three classes:
 
