@@ -28,5 +28,3 @@ Mailer:
             Encryption: ssl
             AuthMode: login
     Bridge: \Webiny\Component\Mailer\Bridge\SwiftMailer\SwiftMailer
-    ClassLoader:
-        Swift_: /var/www/projects/webiny/Vendors/SwiftMailer/lib/classes
