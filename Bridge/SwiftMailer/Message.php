@@ -66,7 +66,8 @@ class Message extends \Swift_Message implements MessageInterface
 
             default:
                 throw new SwiftMailerException('Invalid encoding name provided.
-												Valid encodings are [7bit, 8bit, base64, qp].');
+												Valid encodings are [7bit, 8bit, base64, qp].'
+                );
                 break;
         }
 

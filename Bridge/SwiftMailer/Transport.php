@@ -58,7 +58,7 @@ class Transport implements TransportInterface
             case 'sendmail':
                 $transport = \Swift_SendmailTransport::newInstance($config->get('Transport.Command',
                                                                                 '/usr/sbin/sendmail -bs'
-                                                                   )
+                    )
                 );
                 break;
 
@@ -68,7 +68,8 @@ class Transport implements TransportInterface
 
             default:
                 throw new SwiftMailerException('Invalid transport.type provided.
-												Supported types are [smtp, mail, sendmail, null].');
+												Supported types are [smtp, mail, sendmail, null].'
+                );
                 break;
         }
 
@@ -103,7 +104,8 @@ class Transport implements TransportInterface
         // antiflood
         if ($config->get('AntiFlood', false)) {
             $antiflood = new \Swift_Plugins_AntiFloodPlugin($config->get('AntiFlood.Threshold', 99
-                                                            ), $config->get('AntiFlood.Sleep', 1));
+                ), $config->get('AntiFlood.Sleep', 1)
+            );
             $this->_mailer->registerPlugin($antiflood);
         }
     }

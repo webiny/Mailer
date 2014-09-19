@@ -44,7 +44,8 @@ class Loader
 
         $instance = $libInstance::getMessage($config);
         if (!self::isInstanceOf($instance, '\Webiny\Component\Mailer\Bridge\MessageInterface')) {
-            throw new MailerException('The message library must implement "\Webiny\Component\Mailer\Bridge\MessageInterface".');
+            throw new MailerException('The message library must implement "\Webiny\Component\Mailer\Bridge\MessageInterface".'
+            );
         }
 
         return $instance;
@@ -67,7 +68,8 @@ class Loader
 
         $instance = $libInstance::getTransport($config);
         if (!self::isInstanceOf($instance, '\Webiny\Component\Mailer\Bridge\TransportInterface')) {
-            throw new MailerException('The message library must implement "\Webiny\Component\Mailer\Bridge\TransportInterface".');
+            throw new MailerException('The message library must implement "\Webiny\Component\Mailer\Bridge\TransportInterface".'
+            );
         }
 
         return $instance;
