@@ -7,9 +7,10 @@
 
 namespace Webiny\Component\Mailer\Tests\Bridge\SwiftMailer;
 
-
-use Webiny\Component\ClassLoader\ClassLoader;
 use Webiny\Component\Mailer\Bridge\SwiftMailer\Message;
+use Webiny\Component\Storage\Driver\Local\Local;
+use Webiny\Component\Storage\File\LocalFile;
+use Webiny\Component\Storage\Storage;
 
 /**
  * Class MessageTest
@@ -38,7 +39,8 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddAttachment($message)
     {
-        $message->addAttachment('../../ExampleConfig.yaml', 'ExampleConfig.yaml', 'text/yaml');
+        $storage = new Storage(new Local(__DIR__.'/Attachments'));
+        $message->addAttachment(new LocalFile('Attachment.yaml', $storage), 'ExampleConfig.yaml', 'text/yaml');
         $children = $message->getChildren();
 
         $this->assertSame('text/yaml', $children[0]->getContentType());
@@ -88,10 +90,9 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     public function testAddHeader($message)
     {
         $message->addHeader('test', 'value');
-        $this->assertSame('test', $message->getHeaders()->get('test')->getFieldName());
-        $this->assertSame('value', $message->getHeaders()->get('test')->getFieldBody());
+        $this->assertSame('value', $message->getHeader('test'));
+        $this->assertArrayHasKey('test', $message->getHeaders());
     }
-
 
     public function messageProvider()
     {

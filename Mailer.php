@@ -7,9 +7,11 @@
 
 namespace Webiny\Component\Mailer;
 
+use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Mailer\Bridge\Loader;
 use Webiny\Component\StdLib\ComponentTrait;
 use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
  * This is the Mailer component class.
@@ -43,17 +45,23 @@ class Mailer
     public function __construct($mailer = 'Default')
     {
         $this->_mailerName = $mailer;
-        $this->_transport = Loader::getTransport($this->_getMailerConfig());
+        $this->_transport = Loader::getTransport($mailer);
     }
 
     /**
      * Creates a new message.
      *
+     * @param array|ArrayObject|ConfigObject $config (Optional)
+     *
      * @return MessageInterface
+     * @throws Bridge\MailerException
      */
-    public function getMessage()
+    public function getMessage($config = null)
     {
-        return Loader::getMessage($this->_getMailerConfig());
+        if($config && !$config instanceof ConfigObject){
+            $config = new ConfigObject($config);
+        }
+        return Loader::getMessage($this->_mailerName, $config);
     }
 
     /**
@@ -73,7 +81,7 @@ class Mailer
      * Decorators are arrays that contain keys and values. The message body and subject will be scanned for the keys,
      * and, where found, the key will be replaced with the value.
      *
-     * @param array $replacements Array [key1=>value1, key2=>value2].
+     * @param array $replacements Array [email=> [key1=>value1, key2=>value2], email2=>[...]].
      *
      * @return $this
      */
@@ -82,22 +90,5 @@ class Mailer
         $this->_transport->setDecorators($replacements);
 
         return $this;
-    }
-
-    /**
-     * Returns the config for current mailer.
-     *
-     * @return mixed|\Webiny\Component\Config\ConfigObject
-     * @throws MailerException
-     */
-    private function _getMailerConfig()
-    {
-        $config = $this->getConfig()->get($this->_mailerName, false);
-
-        if (!$config) {
-            throw new MailerException('Unable to load the configuration for "' . $this->_mailerName . '" mailer.');
-        }
-
-        return $config;
     }
 }

@@ -7,6 +7,7 @@
 
 namespace Webiny\Component\Mailer\Tests;
 
+use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 
 class MailerTest extends \PHPUnit_Framework_TestCase
@@ -40,20 +41,11 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Webiny\Component\Mailer\MessageInterface', $mailer->getMessage());
     }
 
-    /**
-     * @expectedException \Swift_TransportException
-     */
-    public function testSendWithoutRecipient()
-    {
-        $mailer = new Mailer();
-        $mailer->send($mailer->getMessage());
-    }
-
     public function testSend()
     {
         $mailer = new Mailer();
         $message = $mailer->getMessage();
-        $message->setTo(['info@webiny.com' => 'Webiny'])->setBody('Testing')->setSubject('PHPUnit test');
+        $message->setTo(new Email('info@webiny.com', 'Webiny'))->setBody('Testing')->setSubject('PHPUnit test');
 
         $result = $mailer->send($message);
         $this->assertNotFalse($result); // this test might fail if sendmail is not configured
@@ -66,7 +58,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigContent()
     {
-        $this->assertSame('nikola@tesla.com', Mailer::getConfig()->Default->Sender->Email);
-        $this->assertSame('\Webiny\Component\Mailer\Bridge\SwiftMailer\SwiftMailer', Mailer::getConfig()->Bridge);
+        $this->assertSame('nikola@localhost', Mailer::getConfig()->Default->Sender->Email);
+        $this->assertSame('\Webiny\Component\Mailer\Bridge\SwiftMailer\SwiftMailer', Mailer::getConfig()->Bridge->Default);
     }
 }
